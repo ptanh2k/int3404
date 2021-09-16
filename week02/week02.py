@@ -19,7 +19,7 @@ def q_0(input_file, output_file, delay=1):
     :param delay:
     :return:
     """
-    img = cv2.imread(input_file, 1)     # 1_ IMREAD_COLOR
+    img = cv2.imread(input_file, cv2.IMREAD_COLOR)
     
     if img is None:
         sys.exit("Could not read the image")
@@ -40,7 +40,7 @@ def q_1(input_file):
     """
         imread() -> Order: BRG (Blue, Green, Red)
     """
-    img1 = cv2.imread(input_file)
+    img1 = cv2.imread(input_file, cv2.IMREAD_COLOR)
     
     if img1 is None:
         sys.exit("Could not read the image")
@@ -71,7 +71,7 @@ def q_1(input_file):
     print("Average of B: %.2f" % avgB)    
     
 def q_2(input_file):
-    img2 = cv2.imread(input_file)
+    img2 = cv2.imread(input_file, cv2.IMREAD_COLOR)
     
     if img2 is None:
         sys.exit("Could not read the image")
@@ -88,8 +88,8 @@ def q_2(input_file):
 
 if __name__ == "__main__":
 
-    q_0('./sample_data/apple.png', './result/test_apple.png', 1000)
-    q_1('./sample_data/chromatic_aberration.png')
+    # q_0('./sample_data/apple.png', './result/test_apple.png', 1000)
+    # q_1('./sample_data/chromatic_aberration.png')
     q_2("./sample_data/apple.png")
 
 
