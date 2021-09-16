@@ -88,8 +88,8 @@ def q_2(input_file):
 
 if __name__ == "__main__":
 
-    # q_0('./sample_data/apple.png', './result/test_apple.png', 1000)
-    # q_1('./sample_data/chromatic_aberration.png')
+    q_0('./sample_data/apple.png', './result/test_apple.png', 1000)
+    q_1('./sample_data/chromatic_aberration.png')
     q_2("./sample_data/apple.png")
 
 
