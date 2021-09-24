@@ -1,13 +1,14 @@
 """
-Name:
-Class:
-MSSV:
+Name: Pham Tuan Anh
+Class: K63K2
+MSSV: 18020116
 
 You should understand the code you write.
 """
 
 import numpy as np
 import cv2
+import matplotlib as plt
 import argparse
 
 
@@ -24,12 +25,16 @@ def q_1(input_file, output_file):
     Convert the image to gray channel of the input image.
     """
     img = cv2.imread(input_file, cv2.IMREAD_COLOR)
+    cv2.imshow('Color', img)
+    
+    R, G, B = img[:, :, 2], img[:, :, 1], img[:, :, 0]
 
     # Convert image to gray channgel
-    img_gray = None
-
+    gray = 0.299 * R + 0.587 * G + 0.114 * B
+    img_gray = gray.astype(np.uint8)
     cv2.imwrite(output_file, img_gray)
-
+    cv2.imshow('Gray', img_gray)
+    cv2.waitKey(0)
 
 def q_2(input_file, output_file):
     """
