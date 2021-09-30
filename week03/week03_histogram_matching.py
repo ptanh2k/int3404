@@ -1,7 +1,7 @@
 """
-Name:
-Class:
-MSSV:
+Name: Pham Tuan Anh
+Class: K63K2
+MSSV: 18020116
 
 You should understand the code you write.
 """

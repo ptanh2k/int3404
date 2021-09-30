@@ -8,8 +8,8 @@ You should understand the code you write.
 
 import numpy as np
 import cv2
-import matplotlib as plt
 import argparse
+from matplotlib import pyplot as plt
 
 
 def q_0(input_file, output_file, ):
@@ -35,15 +35,73 @@ def q_1(input_file, output_file):
     cv2.imwrite(output_file, img_gray)
     cv2.imshow('Gray', img_gray)
     cv2.waitKey(0)
+    
+# Normalized histogram
+def normallizedHistogram(img):
+    (height, width) = img.shape[:2]
+    # uint64 works while uint8 doesn't???
+    # h = np.zeros((256, ), np.uint8)
+    h= np.zeros((256,), dtype=int)
+    # h = [0] * 256
+    for i in range(height):
+        for j in range(width):
+            h[img[i, j]] += 1
+    return h / (height * width)
+
+    
+# Finds cumulative sum of a numpy array, list        
+def cummulativeSum(normalized_hist):
+    cummulative_sum = np.zeros_like(normalized_hist, np.float64)
+    hist_length = len(normalized_hist)
+    for i in range(hist_length):
+        cummulative_sum[i] = sum(normalized_hist[:i+1])
+    return cummulative_sum
 
 def q_2(input_file, output_file):
     """
     Performs a histogram equalization on the input image.
     """
-    img = cv2.imread(input_file, 0)
-
-    # Convert image to gray channgel
-    img_eq = None
+    img = cv2.imread(input_file, cv2.IMREAD_GRAYSCALE)
+    (height, width) = img.shape[:2]
+    
+    # Analysing original image and original histogram
+    # original_hist = cv2.calcHist([img], [0], None, [256], [0, 256])       # Mask: None, value from 0 - 255
+    # plt.figure()
+    # plt.axis("off")
+    # plt.imshow(img, cmap='gray')
+    # plt.figure()
+    # plt.title('Histogram')
+    # plt.xlabel('Bins')
+    # plt.ylabel('Number of pixel')
+    # plt.plot(original_hist)
+    # plt.xlim([0, 256])
+    # plt.show()
+    
+    # Histogram equalization
+    norm_hist = normallizedHistogram(img)
+    
+    cumulative_sum = cummulativeSum(norm_hist)
+    new_hist = np.array(255 * cumulative_sum - 0.5, dtype=np.uint8)
+    
+    # Convert image 
+    img_eq = np.zeros_like(img)
+    
+    for i in range(height):
+        for j in range(width):
+            img_eq[i, j] = new_hist[img[i, j]]
+            
+    # Check        
+    hist_test = cv2.calcHist([img_eq], [0], None, [256], [0, 256])         # Mask: None, value from 0 - 255
+    plt.figure()
+    plt.axis("off")
+    plt.imshow(img_eq, cmap='gray')
+    plt.figure()
+    plt.title('Histogram')
+    plt.xlabel('Bins')
+    plt.ylabel('Number of pixel')
+    plt.plot(hist_test)
+    plt.xlim([0, 256])
+    plt.show()
 
     cv2.imwrite(output_file, img_eq)
 
