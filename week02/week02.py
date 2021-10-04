@@ -85,7 +85,6 @@ def q_2(input_file):
     cv2.imwrite("./result/blurred_apple.png", blurred_apple)
     cv2.waitKey(0)
     
-
 if __name__ == "__main__":
 
     q_0('./sample_data/apple.png', './result/test_apple.png', 1000)
