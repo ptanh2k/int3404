@@ -40,13 +40,13 @@ def q_1(input_file, output_file):
 def normallizedHistogram(img):
     (height, width) = img.shape[:2]
     # uint64 works while uint8 doesn't???
-    # h = np.zeros((256, ), np.uint8)
-    h= np.zeros((256,), dtype=int)
-    # h = [0] * 256
+    # h = np.zeros((256, ), np.uint8)       //Wrong?
+    # h= np.zeros((256,), dtype=int)        //Right??
+    h = [0] * 256
     for i in range(height):
         for j in range(width):
             h[img[i, j]] += 1
-    return h / (height * width)
+    return np.array(h) / (height * width)
 
     
 # Finds cumulative sum of a numpy array, list        
@@ -81,7 +81,7 @@ def q_2(input_file, output_file):
     norm_hist = normallizedHistogram(img)
     
     cumulative_sum = cummulativeSum(norm_hist)
-    new_hist = np.array(255 * cumulative_sum - 0.5, dtype=np.uint8)
+    new_hist = np.array(np.rint(255 * cumulative_sum))
     
     # Convert image 
     img_eq = np.zeros_like(img)
