@@ -1,7 +1,7 @@
 """
-Name:
-Class:
-MSSV:
+Name: Pham Tuan Anh
+Class: K63K2
+MSSV: 18020116
 
 You should understand the code you write.
 """
@@ -9,8 +9,6 @@ You should understand the code you write.
 import cv2
 import numpy as np
 import argparse
-import time
-
 
 def conv_sum(a, b):
     s = 0
@@ -38,6 +36,22 @@ def my_convolution(I, g, mode='valid', boundary='zero_padding'):
 
     return output
 
+def gradient_sobel(input_file, output_file, s):
+    Mx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+    My = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]])
+    
+    img = cv2.imread(input_file, cv2.IMREAD_GRAYSCALE)
+    smoothed_img = cv2.GaussianBlur(img, (s, s), 0)
+    img_x = my_convolution(smoothed_img, Mx)
+    # cv2.imshow('Horizontal image', np.array(img_x).astype(np.uint8))
+    
+    img_y = my_convolution(smoothed_img, My)
+    # cv2.imshow('Vertical image', np.array(img_y).astype(np.uint8))
+    
+    gradient = np.sqrt(np.square(img_x) + np.square(img_y))
+    cv2.imwrite(output_file, np.array(gradient).astype(np.uint8))
+    cv2.imshow('Gradient', np.array(gradient).astype(np.uint8))
+    cv2.waitKey(0)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -46,3 +60,5 @@ if __name__ == '__main__':
     parser.add_argument("--size", "-s", type=int, default=3, help="Size of gaussian filter")
 
     args = parser.parse_args()
+    
+    gradient_sobel(args.input_file, args.output_file, args.size)
